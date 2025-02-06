@@ -1,5 +1,5 @@
-def get_debut_text()-> str:
-    return """\
+def get_debut_text(name)-> str:
+    return f"""\
 !
 !
 
@@ -8,7 +8,7 @@ version 15.2
 service timestamps debug datetime msec
 service timestamps log datetime msec
 !
-hostname R3
+hostname {name}
 !
 boot-start-marker
 boot-end-marker

@@ -31,7 +31,7 @@ for (as_name, as_data) in prime_service["AS"].items():
             if data[as_name][index][0] == border_routeur:
                 data[as_name][index][1] = 1
 
-print(data)
+#print(data)
 list_neighbor_by_as = prime_service["AS"]
 
 for (as_name, list_routeur) in data.items():
@@ -47,14 +47,14 @@ for (as_name, list_routeur) in data.items():
         passive_interface = prime_service["passive_interface"]
         if as_type == "rip":
             if isBorder:
-                contenu += get_debut_text()
+                contenu += get_debut_text(routeur_name)
                 contenu += rip.Get_loopback(loopback_adress, routeur_name)
                 contenu += rip.Get_interface(routeur_name, liens[routeur_name])
                 contenu += Get_BGP_border_router(as_number, neighbors,loopback_adress, routeur_name, prime_service, as_type, masque, border_routeurs, liens_in_as)
                 contenu += rip.Get_end()
                 contenu += get_fin_text()
             else:
-                contenu += get_debut_text()
+                contenu += get_debut_text(routeur_name)
                 contenu += rip.Get_loopback(loopback_adress, routeur_name)
                 contenu += rip.Get_interface(routeur_name, liens[routeur_name])
                 contenu += Get_BGP(as_number, neighbors, routeur_name, as_type)
@@ -62,14 +62,14 @@ for (as_name, list_routeur) in data.items():
                 contenu += get_fin_text()
         if as_type == "ospf":
             if isBorder:
-                contenu += get_debut_text()
+                contenu += get_debut_text(routeur_name)
                 contenu += ospf.Get_loopback(loopback_adress, routeur_name)
                 contenu += ospf.Get_interface(routeur_name, liens[routeur_name], masque)
                 contenu += Get_BGP_border_router(as_number, neighbors, loopback_adress, routeur_name, prime_service,as_type, masque, border_routeurs, liens_in_as, passive_interface)
                 contenu += ospf.Get_end(isBorder, routeur_name)
                 contenu += get_fin_text()
             else:
-                contenu += get_debut_text()
+                contenu += get_debut_text(routeur_name)
                 contenu += ospf.Get_loopback(loopback_adress, routeur_name)
                 contenu += ospf.Get_interface(routeur_name, liens[routeur_name], masque)
                 contenu += Get_BGP(as_number, neighbors, routeur_name, as_type)
@@ -78,7 +78,6 @@ for (as_name, list_routeur) in data.items():
         filename = PATH + f"/i{file_index}_startup-config.cfg"  
         if os.path.exists(filename):
             os.remove(filename)
-            #print(f"Ancien fichier {filename} supprimé.")
 
         with open(filename, "w") as file:
                 file.write(contenu)

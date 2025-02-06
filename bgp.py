@@ -103,12 +103,10 @@ no ip http secure-server
 !
 """
 def get_links(liste_liens, masque)-> str:
-    print("laaa\n",liste_liens, '\n')
     res = ""
     i = 0
     space = ""
     for lien in liste_liens:
-        print(lien)
         if i == 0:
             space = "   "
         res += f"{space}network {lien}::/{masque}\n"
