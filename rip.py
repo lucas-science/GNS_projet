@@ -39,14 +39,13 @@ interface GigabitEthernet3/0
 
 
 
-def get_interface_txt(router_name,interface_name, adresse, masque)->str:
-    id = router_name[-1]
+def get_interface_txt(router_id, router_name,interface_name, adresse, masque)->str:
     if interface_name != "FastEthernet0/0":
         return f"""\
 interface {interface_name}
  no ip address
  negotiation auto
- ipv6 address {adresse}::{id}/{masque}
+ ipv6 address {adresse}::{router_id}/{masque}
  ipv6 enable
  sipv6 rip p1 enable
 !
@@ -56,32 +55,31 @@ interface FastEthernet0/0
  no ip address
  ip ospf cost 1
  duplex full
- ipv6 address {adresse}::{id}/{masque}
+ ipv6 address {adresse}::{router_id}/{masque}
  ipv6 enable
  ipv6 rip p1 enable
 !
 """
 
 
-def Get_loopback(loopback_adress:str, router_name:str):
-    id = router_name[-1]
+def Get_loopback(loopback_adress:str,router_id, router_name:str):
     return f"""\
 interface Loopback0
  no ip address
- ipv6 address {loopback_adress}::{id}/128
+ ipv6 address {loopback_adress}::{router_id}/128
  ipv6 enable
  ipv6 rip p1 enable
 !
 """
 
 
-def Get_interface(router_name: str, liens: dict) -> str:
+def Get_interface(router_id, router_name: str, liens: dict) -> str:
     res = ""
     for interface in INTERFACE.keys():
         if interface not in liens.keys():
             res += NOT_set_INTERFACE.get(interface, "")
         else:
-            res += get_interface_txt(router_name, INTERFACE[interface], liens[interface][0], 64)
+            res += get_interface_txt(router_id, router_name, INTERFACE[interface], liens[interface][0], 64)
     return res
 
 

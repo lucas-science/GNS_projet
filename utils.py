@@ -1,83 +1,37 @@
-def get_debut_text(name)-> str:
-    return f"""\
-!
-!
+def clean_cfg_file(file_path: str):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
 
-!
-version 15.2
-service timestamps debug datetime msec
-service timestamps log datetime msec
-!
-hostname {name}
-!
-boot-start-marker
-boot-end-marker
-!
-!
-!
-no aaa new-model
-no ip icmp rate-limit unreachable
-ip cef
-!
-!
-!
-!
-!
-!
-no ip domain lookup
-ipv6 unicast-routing
-ipv6 cef
-!
-!
-multilink bundle-name authenticated
-!
-!
-!
-!
-!
-!
-!
-!
-!
-ip tcp synwait-time 5
-! 
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-"""
+    # Process lines to remove consecutive empty lines
+    processed_lines = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        stripped_line = line.strip()
+    
+        # Check if the current line is empty and the next line is also empty
+        if stripped_line == '' and i + 1 < len(lines):
+            # Skip this line if it and the next line are both empty
+            i += 1
+            continue
+        processed_lines.append(line)
+        i += 1
 
+    # Write the processed lines back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(processed_lines)
+        
+        
+def add_newline_after_third_line(file_path: str):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
 
+    # Insert a newline after the third line
+    if len(lines) >= 2:
+        lines.insert(2, '\n')
 
-def get_fin_text()->str:
-    return """\
-!
-!
-!
-control-plane
-!
-!
-line con 0
- exec-timeout 0 0
- privilege level 15
- logging synchronous
- stopbits 1
-line aux 0
- exec-timeout 0 0
- privilege level 15
- logging synchronous
- stopbits 1
-line vty 0 4
- login
-!
-!
-end
+    # Write the modified lines back to a new file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
-"""
+        
