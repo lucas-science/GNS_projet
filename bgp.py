@@ -1,7 +1,7 @@
 def Get_BGP(AS_number: str, list_routeur_as: list, router_id: int, router_name: str, type_routage: str) -> str:
     bgp_neighbor = get_bgp_neighbor(list_routeur_as, AS_number, router_name)
     bgp_family = get_bgp_family(list_routeur_as, AS_number, router_name)
-    redistribute = f"redistribute ospf {router_id}"
+    redistribute = f"  redistribute ospf {router_id}"
     return f"""\
 router bgp {AS_number}
  bgp router-id {router_id}.{router_id}.{router_id}.{router_id}
@@ -63,7 +63,7 @@ def Get_BGP_border_router(
     bgp_beighbor = get_bgp_neighbor(list_routeur_as, AS_number, router_name)
     bgp_family = get_bgp_family(list_routeur_as, AS_number,router_name) 
     bgp_links = get_links(liens, masque)
-    redistribute = f"redistribute ospf {router_id}"
+    redistribute = f"  redistribute ospf {router_id}"
     [adress, as_number] = get_border_routeur_link(border_routeurs, router_name)
     routage_ospf = ""
     if type_routage == "ospf":
@@ -80,7 +80,7 @@ router bgp {AS_number}
  bgp router-id {router_id}.{router_id}.{router_id}.{router_id}
  bgp log-neighbor-changes
  no bgp default ipv4-unicast
- {bgp_beighbor}
+{bgp_beighbor}
  neighbor {adress} remote-as {as_number}
  !
  address-family ipv4
@@ -88,7 +88,7 @@ router bgp {AS_number}
  exit-address-family
  !
  address-family ipv6
-  {redistribute if type_routage == "ospf" else ""}
+{redistribute if type_routage == "ospf" else ""}
   network {loopback_adress}::/125    
 {bgp_links}
 {bgp_family}
@@ -104,13 +104,8 @@ no ip http secure-server
 """
 def get_links(liste_liens, masque)-> str:
     res = ""
-    i = 0
-    space = ""
     for lien in liste_liens:
-        if i == 0:
-            space = "   "
-        res += f"{space}network {lien}::/{masque}\n"
-        i += 1
+        res += f"  network {lien}::/{masque}\n"
     return res
 
 def get_border_routeur_link(border_routeurs:dict, router_name)->list:

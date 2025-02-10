@@ -57,7 +57,6 @@ interface FastEthernet0/0
  duplex full
  ipv6 address {adresse}::{router_id}/{masque}
  ipv6 enable
- ipv6 rip p1 enable
 !
 """
 

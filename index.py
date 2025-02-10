@@ -30,7 +30,7 @@ for (as_name, as_data) in prime_service["AS"].items():
         data[as_name].append([(routeurName, routeurId),0])
     for border_routeur in as_data["border_routeur"]:
         for index in range(len(data[as_name])):
-            if data[as_name][index][0] == border_routeur:
+            if data[as_name][index][0][0] == border_routeur:
                 data[as_name][index][1] = 1
 
 print(data)
