@@ -47,7 +47,7 @@ interface {interface_name}
  negotiation auto
  ipv6 address {adresse}::{router_id}/{masque}
  ipv6 enable
- sipv6 rip p1 enable
+ ipv6 rip p1 enable
 !
 """
     return f"""\
